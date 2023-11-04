@@ -22,6 +22,7 @@
 
     <script src="script.js"></script>
 
+
     function generateText(prompt) {
     const apiKey = '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'; // Replace with your actual API key
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'; // Use the appropriate endpoint
@@ -47,6 +48,10 @@
         console.error('Error generating text:', error);
     });
 }
+
+    <div id="generatedContent"></div>
+<button onclick="generateText('Generate text based on user input.')">Generate Text</button>
+
 
 </body>
 </html>
