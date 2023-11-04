@@ -21,5 +21,32 @@
     <button onclick="optimizeVideoDetails()">Optimize for SEO</button>
 
     <script src="script.js"></script>
+
+    function generateText(prompt) {
+    const apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with your actual API key
+    const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'; // Use the appropriate endpoint
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            max_tokens: 50, // Adjust this based on your needs
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const generatedText = data.choices[0].text;
+        // Update your website content with the generated text
+        document.getElementById('generatedContent').textContent = generatedText;
+    })
+    .catch(error => {
+        console.error('Error generating text:', error);
+    });
+}
+
 </body>
 </html>
