@@ -56,15 +56,30 @@
 <script>
 document.getElementById('generateBtn').addEventListener('click', function() {
   const videoUrl = document.getElementById('videoUrl').value;
-  fetchYouTubeData(videoUrl).then(data => {
-    generateSEOCopy(data).then(seoData => {
-      document.getElementById('title').value = seoData.title;
-      document.getElementById('description').value = seoData.description;
-      document.getElementById('timestamps').value = seoData.timestamps;
-      document.getElementById('seoTags').value = seoData.tags.join(', ');
+  fetch('/getVideoDetails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ videoUrl })
+  })
+  .then(response => response.json())
+  .then(videoDetails => {
+    fetch('/generateSeoCopy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(videoDetails)
+    })
+    .then(response => response.json())
+    .then(seoCopy => {
+      document.getElementById('title').value = seoCopy.title;
+      // ...update other fields similarly
     });
   });
 });
+
 
 function fetchYouTubeData(videoUrl) {
   // Function to call YouTube API and return video data
