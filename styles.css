@@ -1,0 +1,52 @@
+
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  button {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #4cae4c;
+  }
+  .output {
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  img {
+    max-width: 100%; /* This will make sure your image is responsive and fits its container */
+    height: auto; /* This will maintain the aspect ratio */
+  }
+  
+  #video-thumbnail {
+    display: none;
+}
+
+.thumbnail-visible {
+  display: block;
+}
+
+
+
+
+  

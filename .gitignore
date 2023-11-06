@@ -1,0 +1,29 @@
+# Copy this file to '.env' and fill in the values.
+
+# Port where the server should run
+PORT=
+
+# Database connection (use your own local or hosted database URL)
+DATABASE_URL=
+
+# API keys for third-party services
+YOUTUBE_API_KEY=AIzaSyB4Qpb290myTTiq2NPa03Jwhen87XGkp6w
+OPENAI_API_KEY=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
+GOOGLE_MAPS_API_KEY=
+
+# Session secret for express-session
+SESSION_SECRET=
+
+# OAuth credentials for GitHub
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# SMTP settings for email sending
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASSWORD=
+
+# Environment (development or production)
+NODE_ENV=
+

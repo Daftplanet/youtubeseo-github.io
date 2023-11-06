@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Video Information Fetcher</title>
+<link rel="stylesheet" href="styles.css"> <!-- Link to your external stylesheet -->
+</head>
+<body>
+      
+<h1>YouTube Video Information Fetcher</h1>
+
+<!-- Input form for YouTube URL -->
+<div>
+    <label for="youtube-url">Paste YouTube Video URL:</label>
+    <input type="text" id="youtube-url" placeholder="Enter YouTube video URL here">
+    <button id="get-info">Get Video Info</button>
+</div>
+
+<!-- Container for displaying video information -->
+<div id="video-info">
+    <h2>Video Title</h2>
+    <div class="output" id="video-title"></div>
+
+    <img id="video-thumbnail" src="" alt="Video Thumbnail">
+    
+    <h3>Description</h3>
+    <div class="output" id="video-description"></div>
+
+    <h3>Timestamps</h3>
+    <pre id="video-timestamps" class="output"></pre> <!-- Updated ID for timestamps -->
+    
+    <!-- The 'seotags' element is not used in the JavaScript provided, but you can add functionality similarly -->
+    <h3>SEO Tags</h3>
+    <div class="output" id="seotags"></div>
+    
+    <!-- Additional elements for timestamps and SEO tags can be added here -->
+</div>
+
+<script src="scripts.js"></script> <!-- Link to your external JavaScript file -->
+
+</body>
+</html>
