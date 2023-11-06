@@ -9,7 +9,8 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 // Replace with your actual API key
-const API_KEY = 'YOUR_YOUTUBE_API_KEY';
+const API_KEY = 'AIzaSyB4Qpb290myTTiq2NPa03Jwhen87XGkp6w
+';
 
 app.post('/youtube-video-details', async (req, res) => {
   const { videoID } = req.body;
