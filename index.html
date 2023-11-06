@@ -72,120 +72,41 @@
 </div>
 
 <script>
-
-
-// This function extracts the video ID from the given YouTube URL
-function extractVideoID(url) {
-  const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
-
-// This function requests metadata from the server using the video ID
-async function generateMetadata() {
-  const url = document.getElementById('youtubeUrl').value;
-  const videoID = extractVideoID(url);
-  
-  if (!videoID) {
-    alert('Please enter a valid YouTube URL.');
-    return;
-  }
-  
-  try {
-    // Request the YouTube video details from the server
-    const response = await fetch('/youtube-video-details', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ videoID: videoID })
-    });
-    
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const videoDetails = await response.json();
-    
-    // Display the received video details
-    displayMetadata(videoDetails);
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred while fetching video details.');
-  }
-}
-
-function displayMetadata(videoDetails) {
-  console.log(videoDetails); // For debugging purposes
-
-  if (!videoDetails || !videoDetails.snippet) {
-    console.error('Invalid video details:', videoDetails);
-    return;
-  }
-
-  const { snippet } = videoDetails;
-
-  // Thumbnail
-  const thumbnailElement = document.getElementById('generatedThumbnail');
-  if (snippet.thumbnails && snippet.thumbnails.high && thumbnailElement) {
-    thumbnailElement.src = snippet.thumbnails.high.url;
+// Function to extract the video ID from the YouTube URL
+function getVideoId(url) {
+  var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  var match = url.match(regExp);
+  if (match && match[2].length == 11) {
+    return match[2];
   } else {
-    console.error('High resolution thumbnail not found.');
+    alert("Could not extract video ID.");
   }
-
-  // Title
-  const titleElement = document.getElementById('generatedTitle');
-  titleElement.textContent = snippet.title || 'Title not found';
-
-  // Description
-  const descriptionElement = document.getElementById('generatedDescription');
-  descriptionElement.textContent = snippet.description || 'Description not found';
-
-  // Tags
-  const tagsElement = document.getElementById('generatedTags');
-  tagsElement.textContent = snippet.tags && Array.isArray(snippet.tags) ? snippet.tags.join(', ') : 'No tags found';
-
-  // Timestamps
-  const timestampsElement = document.getElementById('generatedTimestamps');
-  timestampsElement.textContent = snippet.timestamps && Array.isArray(snippet.timestamps) ? snippet.timestamps.join('\n') : 'No timestamps found';
 }
-async function updateForSEO() {
-  const titleElement = document.getElementById('generatedTitle');
-  const descriptionElement = document.getElementById('generatedDescription');
-  const tagsElement = document.getElementById('generatedTags');
-  const timestampsElement = document.getElementById('generatedTimestamps');
 
-  try {
-    const response = await fetch('/seo-optimize', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: titleElement.textContent,
-        description: descriptionElement.textContent,
-        tags: tagsElement.textContent.split(', '), // Assuming tags are separated by comma
-        timestamps: timestampsElement.textContent.split('\n') // Assuming timestamps are separated by new lines
+// Function to call the YouTube API and get video metadata
+function generateMetadata() {
+  var url = document.getElementById('youtubeUrl').value;
+  var videoId = getVideoId(url);
+
+  if (videoId) {
+    // Insert your API key in the 'YOUR_API_KEY' placeholder
+    var apiURL = 'https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key=YOUR_API_KEY&part=snippet,contentDetails,statistics';
+
+    fetch(apiURL)
+      .then(response => response.json())
+      .then(data => {
+        var videoData = data.items[0].snippet;
+        document.getElementById('generatedTitle').textContent = videoData.title;
+        document.getElementById('generatedDescription').textContent = videoData.description;
+        document.getElementById('generatedThumbnail').src = videoData.thumbnails.high.url;
+        // ... Add any additional data points you want to extract
       })
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const seoData = await response.json();
-    
-    // Here you would update your UI with the SEO data
-    titleElement.textContent = seoData.title; // This will replace the title with the SEO optimized one
-
-    // Similarly, update description, timestamps, and tags if needed
-
-  } catch (error) {
-    console.error('Error:', error);
-    alert('An error occurred while optimizing for SEO.');
+      .catch(error => console.error('Error fetching data: ', error));
   }
 }
 
-</script>
-</body>
-</html>
+// Example SEO optimization function (needs to be implemented)
+function updateForSEO() {
+  // This function would modify your metadata to be more SEO-friendly
+  // The implementation would depend on your SEO strategy
+}
