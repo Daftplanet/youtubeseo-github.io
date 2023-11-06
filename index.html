@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Metadata Generator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: auto;
+  }
+  input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  button {
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #4cae4c;
+  }
+  .output {
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  img {
+    max-width: 1280px;
+    height: 720px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>YouTube Metadata Generator</h1>
+  <input type="text" id="youtubeUrl" placeholder="Enter YouTube URL here...">
+  <button onclick="generateMetadata()">Generate</button>
+  
+  <h2>Generated Thumbnail</h2>
+  <div class="output">
+    <img id="generatedThumbnail" src="" alt="Video Thumbnail">
+  </div>
+
+  <h2>Generated Title</h2>
+  <div class="output" id="generatedTitle"></div>
+  
+  <h2>Generated Description</h2>
+  <div class="output" id="generatedDescription"></div>
+  
+  <h2>Generated Timestamps</h2>
+  <div class="output" id="generatedTimestamps"></div>
+  
+  <h2>Generated Tags</h2>
+  <div class="output" id="generatedTags"></div>
+</div>
+
+<button onclick="updateForSEO()">Update for SEO</button>
+
+</div>
+
+<script>
+
+
+// This function extracts the video ID from the given YouTube URL
+function extractVideoID(url) {
+  const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+// This function requests metadata from the server using the video ID
+async function generateMetadata() {
+  const url = document.getElementById('youtubeUrl').value;
+  const videoID = extractVideoID(url);
+  
+  if (!videoID) {
+    alert('Please enter a valid YouTube URL.');
+    return;
+  }
+  
+  try {
+    // Request the YouTube video details from the server
+    const response = await fetch('/youtube-video-details', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ videoID: videoID })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const videoDetails = await response.json();
+    
+    // Display the received video details
+    displayMetadata(videoDetails);
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred while fetching video details.');
+  }
+}
+
+function displayMetadata(videoDetails) {
+  console.log(videoDetails); // For debugging purposes
+
+  if (!videoDetails || !videoDetails.snippet) {
+    console.error('Invalid video details:', videoDetails);
+    return;
+  }
+
+  const { snippet } = videoDetails;
+
+  // Thumbnail
+  const thumbnailElement = document.getElementById('generatedThumbnail');
+  if (snippet.thumbnails && snippet.thumbnails.high && thumbnailElement) {
+    thumbnailElement.src = snippet.thumbnails.high.url;
+  } else {
+    console.error('High resolution thumbnail not found.');
+  }
+
+  // Title
+  const titleElement = document.getElementById('generatedTitle');
+  titleElement.textContent = snippet.title || 'Title not found';
+
+  // Description
+  const descriptionElement = document.getElementById('generatedDescription');
+  descriptionElement.textContent = snippet.description || 'Description not found';
+
+  // Tags
+  const tagsElement = document.getElementById('generatedTags');
+  tagsElement.textContent = snippet.tags && Array.isArray(snippet.tags) ? snippet.tags.join(', ') : 'No tags found';
+
+  // Timestamps
+  const timestampsElement = document.getElementById('generatedTimestamps');
+  timestampsElement.textContent = snippet.timestamps && Array.isArray(snippet.timestamps) ? snippet.timestamps.join('\n') : 'No timestamps found';
+}
+async function updateForSEO() {
+  const titleElement = document.getElementById('generatedTitle');
+  const descriptionElement = document.getElementById('generatedDescription');
+  const tagsElement = document.getElementById('generatedTags');
+  const timestampsElement = document.getElementById('generatedTimestamps');
+
+  try {
+    const response = await fetch('/seo-optimize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: titleElement.textContent,
+        description: descriptionElement.textContent,
+        tags: tagsElement.textContent.split(', '), // Assuming tags are separated by comma
+        timestamps: timestampsElement.textContent.split('\n') // Assuming timestamps are separated by new lines
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const seoData = await response.json();
+    
+    // Here you would update your UI with the SEO data
+    titleElement.textContent = seoData.title; // This will replace the title with the SEO optimized one
+
+    // Similarly, update description, timestamps, and tags if needed
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred while optimizing for SEO.');
+  }
+}
+
+</script>
+</body>
+</html>
