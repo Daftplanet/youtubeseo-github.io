@@ -90,7 +90,8 @@ function generateMetadata() {
 
   if (videoId) {
     // Insert your API key in the 'YOUR_API_KEY' placeholder
-    var apiURL = 'https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key=YOUR_API_KEY&part=snippet,contentDetails,statistics';
+    var apiURL = 'https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key=AIzaSyB4Qpb290myTTiq2NPa03Jwhen87XGkp6w
+&part=snippet,contentDetails,statistics';
 
     fetch(apiURL)
       .then(response => response.json())
