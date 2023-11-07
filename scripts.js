@@ -73,12 +73,10 @@ function extractTimestamps(description) {
         }
     });
 
+    return {
         description: descriptionText.join('\n').trim(), // Rejoin the cleaned description text
         timestamps: timestamps // Return the extracted timestamps
     };
 }
-      description: descriptionText.join('\n').trim(), // Rejoin the cleaned description text
-      timestamps: timestamps // Return the extracted timestamps
-    };
-  }
+
   
