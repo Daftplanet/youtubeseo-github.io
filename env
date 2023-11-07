@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/fetchVideoInfo')
 def fetch_video_info():
     video_id = request.args.get('videoId')
-    api_key = os.environ.get('API_KEY')  # The API key is read from an environment variable
+    api_key = os.environ.get('YOUTUBE_API_KEY')  # The API key is read from an environment variable
     url = f"https://www.googleapis.com/youtube/v3/videos?id={video_id}&key={api_key}&part=snippet"
     
     response = requests.get(url)
