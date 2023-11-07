@@ -61,7 +61,6 @@ function extractTimestamps(description) {
     let lines = description.split('\n');
     let timestamps = [];
     let descriptionText = [];
-    let capturingTimestamps = false; // This variable is declared but not used. You can remove it if not needed.
   
     lines.forEach(line => {
       // Check if the line contains a timestamp format
@@ -70,9 +69,6 @@ function extractTimestamps(description) {
         if (line.trim().match(/^\d+:\d+/)) {
           timestamps.push(line.trim());
         } else {
-          // If the code logic implies that any non-timestamp lines after the first timestamp are ignored
-          // then the 'else' part here should not be present. If you want to include all non-timestamp lines
-          // then this 'else' part should push the line to descriptionText.
           descriptionText.push(line);
         }
       } else {
@@ -80,10 +76,14 @@ function extractTimestamps(description) {
       }
     });
   
+    // This return is within the function and should not cause an error
     return {
       description: descriptionText.join('\n').trim(), // Rejoin the cleaned description text
       timestamps: timestamps // Return the extracted timestamps
     };
 }
 
-  
+// Example usage:
+// let result = extractTimestamps("Some description with timestamps");
+// console.log(result);
+
