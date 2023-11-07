@@ -49,33 +49,36 @@ function fetchVideoInfo(videoId) {
 }
 
 function extractTimestamps(description) {
-    // Your existing extractTimestamps logic here
-    // ...
-}
+    // Assuming there's logic here that you've omitted for brevity
 
     // Remove the 'TIMESTAMPS:' keyword from the description before processing
     description = description.replace(/^TIMESTAMPS:.*$/gim, '');
-  
+
     let lines = description.split('\n');
     let timestamps = [];
     let descriptionText = [];
     let capturingTimestamps = false;
-  
+
     lines.forEach(line => {
-      // Check if the line contains a timestamp format
-      if (line.match(/\d+:\d+/)) {
-        // Add the line to timestamps if it starts with a timestamp pattern
-        if (line.trim().match(/^\d+:\d+/)) {
-          timestamps.push(line.trim());
+        // Check if the line contains a timestamp format
+        if (line.match(/\d+:\d+/)) {
+            // Add the line to timestamps if it starts with a timestamp pattern
+            if (line.trim().match(/^\d+:\d+/)) {
+                timestamps.push(line.trim());
+            } else {
+                descriptionText.push(line);
+            }
         } else {
-          descriptionText.push(line);
+            descriptionText.push(line);
         }
-      } else {
-        descriptionText.push(line);
-      }
     });
-  
+
     return {
+        description: descriptionText.join('\n').trim(), // Rejoin the cleaned description text
+        timestamps: timestamps // Return the extracted timestamps
+    };
+}
+
       description: descriptionText.join('\n').trim(), // Rejoin the cleaned description text
       timestamps: timestamps // Return the extracted timestamps
     };
