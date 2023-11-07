@@ -71,16 +71,22 @@ document.getElementById('get-info').onclick = function() {
   }
   
   function fetchVideoInfo(videoId) {
-    const apiKey = process.env.YOUTUBE_API_KEY; // Assuming your .env variable is named YOUTUBE_API_KEY
-    var url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`;
-  
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if(data.items.length === 0) {
-          alert('No video information found. Please check the video ID.');
-          return;
-        }
+  var url = `/your-server-endpoint?videoId=${videoId}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if(data.items.length === 0) {
+        alert('No video information found. Please check the video ID.');
+        return;
+      }
+      // process the data as required
+    })
+    .catch(error => {
+      console.error('Error fetching video information:', error);
+    });
+}
+
         var snippet = data.items[0].snippet;
         document.getElementById('video-title').textContent = snippet.title;
 // When setting the source:
