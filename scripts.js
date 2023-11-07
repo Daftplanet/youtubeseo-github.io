@@ -1,36 +1,55 @@
-
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('get-info').addEventListener('click', () => {
         var youtubeUrl = document.getElementById('youtube-url').value;
-        var videoId = extractVideoID(youtubeUrl); // You'll need to implement extractVideoID to get the ID from the URL
-        fetchVideoInfo(videoId);
+        var videoId = extractVideoID(youtubeUrl);
+        if (videoId) {
+            fetchVideoInfo(videoId);
+        } else {
+            alert('Please enter a valid YouTube video URL.');
+        }
     });
 });
 
 function extractVideoID(url) {
-    // Extract the video ID from the YouTube URL
-    // Implement the logic or use a library to parse the URL and get the `v` parameter
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match && match[2].length === 11) {
+        return match[2];
+    } else {
+        return null;
+    }
 }
 
-// The fetchVideoInfo function goes here
 function fetchVideoInfo(videoId) {
-    fetch(`/fetchVideoInfo?videoId=${videoId}`)
-      .then(response => {
+    var url = `/fetchVideoInfo?videoId=${videoId}`;
+    fetch(url)
+    .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok');
         }
         return response.json();
-      })
-      .then(data => {
-        const snippet = data.items[0].snippet;
-        // Update your DOM elements here
-        // ...
-      })
-      .catch(error => {
+    })
+    .then(data => {
+        if (data.items.length === 0) {
+            alert('No video information found. Please check the video ID.');
+            return;
+        }
+        var snippet = data.items[0].snippet;
+        document.getElementById('video-title').textContent = snippet.title;
+        document.getElementById('video-thumbnail').src = snippet.thumbnails.high.url;
+        document.getElementById('video-thumbnail').classList.add('thumbnail-visible');
+        document.getElementById('video-description').textContent = snippet.description;
+
+        // Additional processing and DOM updates for timestamps and SEO tags here.
+    })
+    .catch(error => {
         console.error('Error fetching video information:', error);
         alert('There was an error fetching the video information.');
-      });
-  }
+    });
+}
+
+// Additional functions like extractTimestamps can be placed here.
+
   
   // Other functions like extractVideoID, etc.
   // ...
