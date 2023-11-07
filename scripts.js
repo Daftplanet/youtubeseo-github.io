@@ -82,6 +82,17 @@ function extractTimestamps(description) {
       timestamps: timestamps // Return the extracted timestamps
     };
 }
+// JavaScript code on your GitHub Pages site
+fetch('https://www.pythonanywhere.com/user/Daftplanet/shares/4a74176d399d4996a4f381158716fcc7/')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    // do something with the data
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
 
 // Example usage:
 // let result = extractTimestamps("Some description with timestamps");
