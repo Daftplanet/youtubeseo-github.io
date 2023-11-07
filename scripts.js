@@ -1,4 +1,18 @@
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('get-info').addEventListener('click', () => {
+        var youtubeUrl = document.getElementById('youtube-url').value;
+        var videoId = extractVideoID(youtubeUrl); // You'll need to implement extractVideoID to get the ID from the URL
+        fetchVideoInfo(videoId);
+    });
+});
+
+function extractVideoID(url) {
+    // Extract the video ID from the YouTube URL
+    // Implement the logic or use a library to parse the URL and get the `v` parameter
+}
+
+// The fetchVideoInfo function goes here
 function fetchVideoInfo(videoId) {
     fetch(`/fetchVideoInfo?videoId=${videoId}`)
       .then(response => {
