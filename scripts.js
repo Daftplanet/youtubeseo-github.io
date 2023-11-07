@@ -13,40 +13,49 @@ document.addEventListener('DOMContentLoaded', () => {
 function extractVideoID(url) {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.match(regExp);
-    if (match && match[2].length === 11) {
-        return match[2];
-    } else {
-        return null;
-    }
+    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 function fetchVideoInfo(videoId) {
     var url = `/fetchVideoInfo?videoId=${videoId}`;
     fetch(url)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.items.length === 0) {
-            alert('No video information found. Please check the video ID.');
-            return;
-        }
-        var snippet = data.items[0].snippet;
-        document.getElementById('video-title').textContent = snippet.title;
-        document.getElementById('video-thumbnail').src = snippet.thumbnails.high.url;
-        document.getElementById('video-thumbnail').classList.add('thumbnail-visible');
-        document.getElementById('video-description').textContent = snippet.description;
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.items.length === 0) {
+                alert('No video information found. Please check the video ID.');
+                return;
+            }
+            var snippet = data.items[0].snippet;
+            document.getElementById('video-title').textContent = snippet.title;
+            document.getElementById('video-thumbnail').src = snippet.thumbnails.high.url;
+            document.getElementById('video-thumbnail').classList.add('thumbnail-visible');
+            document.getElementById('video-description').textContent = snippet.description;
 
-        // Additional processing and DOM updates for timestamps and SEO tags here.
-    })
-    .catch(error => {
-        console.error('Error fetching video information:', error);
-        alert('There was an error fetching the video information.');
-    });
+            // Handling SEO tags
+            var tags = snippet.tags; // Tags come from the snippet object
+            document.getElementById('seotags').textContent = tags && tags.length ? tags.join(', ') : 'No SEO tags available.';
+
+            // Extracting timestamps
+            var timestampsData = extractTimestamps(snippet.description);
+            document.getElementById('video-timestamps').textContent = timestampsData.timestamps.join('\n');
+            document.getElementById('video-description').textContent = timestampsData.description;
+        })
+        .catch(error => {
+            console.error('Error fetching video information:', error);
+            alert('There was an error fetching the video information.');
+        });
 }
+
+function extractTimestamps(description) {
+    // Assuming that the extractTimestamps function works as intended and returns an object with description and timestamps
+    // ... (Your existing extractTimestamps logic here)
+}
+
 
 // Additional functions like extractTimestamps can be placed here.
 
