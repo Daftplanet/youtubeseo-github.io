@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+function updateSettings() {
+  // ... code to update settings ...
+
+  // Log the message to the console
+  console.log("Must reload extension for modifications to take effect.");
+}
 
 function extractVideoID(url) {
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
