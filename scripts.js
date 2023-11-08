@@ -83,7 +83,7 @@ function extractTimestamps(description) {
     };
 }
 // JavaScript code on your GitHub Pages site
-fetch('https://www.pythonanywhere.com/user/Daftplanet/shares/4a74176d399d4996a4f381158716fcc7/')
+fetch('https://www.pythonanywhere.com/user/Daftplanet/shares/0829c96aede64061b794047f8facd60d/')
   .then(response => response.json())
   .then(data => {
     console.log(data);
