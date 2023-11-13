@@ -82,17 +82,6 @@ function extractTimestamps(description) {
       timestamps: timestamps // Return the extracted timestamps
     };
 }
-// JavaScript code on your GitHub Pages site
-fetch('https://Daftplanet.pythonanywhere.com/fetchVideoInfo?videoId=${videoId}')
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    // do something with the data
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-
 
 
 // Example usage:
